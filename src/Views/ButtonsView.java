@@ -27,34 +27,44 @@ public class ButtonsView implements View {
     }
 
     private void initComponents() {
+        //init top buttons
         addUserButton = new JButton("Add User");
         addGroupButton = new JButton("Add Group");
         openUserButton = new JButton("Open User View");
-        openUserButton.setSize(30,30);
+        openUserButton.setSize(304,30);
 
+        //init top text fields
         userIDTextfield = new JTextField();
         groupIDTextfield = new JTextField();
 
+        //init bottom buttons
         showUserTotalButton = new JButton("Show user total");
         showMessagesTotalButton = new JButton("Show messages total");
         showGroupTotalButton = new JButton("Show group total");
         showPositiveTotalButton = new JButton("Show positive percentage");
 
+        //Top Panel UI
         JPanel topButtonPanel = new JPanel();
         topButtonPanel.setLayout(new GridLayout(2,2,5,5));
-        topButtonPanel.setBorder(new EmptyBorder(15,0,0,15));
+        topButtonPanel.setBorder(new EmptyBorder(18,0,0,15));
         topButtonPanel.add(userIDTextfield);
         topButtonPanel.add(addUserButton);
-
+            //Inner top panel UI
         topButtonPanel.add(groupIDTextfield);
         topButtonPanel.add(addGroupButton);
 
+        //Center Panel UI
         JPanel centerButtonPanel = new JPanel();
-        centerButtonPanel.setLayout(new BoxLayout(centerButtonPanel,BoxLayout.Y_AXIS));
-        centerButtonPanel.add(Box.createRigidArea(new Dimension(30,30)));
-        centerButtonPanel.add(openUserButton);
+        centerButtonPanel.setLayout(new BorderLayout());
+        centerButtonPanel.setBorder(new EmptyBorder(5,0,5,15));
 
+        JPanel innerCenterPanel = new JPanel();
+        centerButtonPanel.setLayout(new BorderLayout());
+        innerCenterPanel.add(openUserButton,BorderLayout.CENTER);
 
+        centerButtonPanel.add(innerCenterPanel);
+
+        //Bottom Panel UI
         JPanel bottomButtonPanel = new JPanel();
         bottomButtonPanel.setLayout(new GridLayout(2,2,5,5));
         bottomButtonPanel.setBorder(new EmptyBorder(0,0,15,15));
@@ -63,6 +73,7 @@ public class ButtonsView implements View {
         bottomButtonPanel.add(showMessagesTotalButton);
         bottomButtonPanel.add(showPositiveTotalButton);
 
+        //Main panel
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BorderLayout());
         buttonsPanel.add(topButtonPanel, BorderLayout.NORTH);
