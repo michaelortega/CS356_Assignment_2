@@ -41,7 +41,6 @@ public class TreeView implements View {
         mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
         mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
         mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
 
         p.add(new DefaultMutableTreeNode(new UserGroup("xxxx")));
         p.add(new DefaultMutableTreeNode(new UserGroup("xxxxx")));
