@@ -23,4 +23,9 @@ public class UserGroup implements TreeComponent {
     public String displayID() {
         return groupID;
     }
+
+    @Override
+    public Class getType() {
+        return UserGroup.class;
+    }
 }

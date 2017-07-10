@@ -11,6 +11,6 @@ public class Driver {
     public static void main(String[] args)
     {
         MainView mainView = new MainView();
-        MainController mainController = new MainController(mainView);
+        MainController mainController = new MainController(mainView,mainView.getTreeViewModel());
     }
 }

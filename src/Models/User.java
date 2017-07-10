@@ -26,6 +26,11 @@ public class User implements TreeComponent{
     }
 
     @Override
+    public Class getType() {
+        return User.class;
+    }
+
+    @Override
     public String toString() {
         return displayOnJTree();
     }
