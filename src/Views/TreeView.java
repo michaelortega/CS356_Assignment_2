@@ -10,9 +10,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 
-public class TreeView  {
+public class TreeView {
 
     private JPanel treePanel;
     private JTree userTree;
@@ -23,16 +24,15 @@ public class TreeView  {
     public TreeView() {
 
 
-        mainRootGroup = new DefaultMutableTreeNode(new UserGroup("Root"));
         treeModel = new DefaultTreeModel(mainRootGroup);
+        mainRootGroup = new DefaultMutableTreeNode(new UserGroup("Root"));
+        mainRootGroup.add(new DefaultMutableTreeNode(new User("d")));
+        treeModel.setRoot(mainRootGroup);
         userTree = new JTree(mainRootGroup);
         scrollPaneTree = new JScrollPane(userTree);
-        scrollPaneTree.setPreferredSize(new Dimension(300,500));
+        scrollPaneTree.setPreferredSize(new Dimension(300, 500));
 
         initComponent();
-
-
-
 
 
     }
@@ -41,33 +41,29 @@ public class TreeView  {
         treePanel = new JPanel();
         treePanel.setLayout(new BorderLayout());
 
-       treePanel.setBorder(new EmptyBorder(13, 5, 15, 5));
-       scrollPaneTree.setBorder(new EmptyBorder(5, 5, 5, 5));
+        treePanel.setBorder(new EmptyBorder(13, 5, 15, 5));
+        scrollPaneTree.setBorder(new EmptyBorder(5, 5, 5, 5));
         treePanel.add(scrollPaneTree);
 
 
     }
 
-    public void add(DefaultMutableTreeNode selection, User type) {
-        selection.add(new DefaultMutableTreeNode(type));
-        userTree.expandRow(selection.getLevel());
-        //treeModel.nodeStructureChanged(selection);
-        //treeModel.insertNodeInto(new DefaultMutableTreeNode(type),selection,selection.getChildCount());
-        //treeModel.reload();
-    }
 
-    public void addNewGroup(String newUserName) {
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) userTree.getLastSelectedPathComponent();
-        if (selectedNode == null) {
-            throw new NullPointerException("No Group was selected");
-        } else if (selectedNode.getUserObject() instanceof User) {
-            throw new IllegalArgumentException("A user was selected, please select a group");
+    public void add(DefaultMutableTreeNode selection, TreeComponent treeComponent) {
+        DefaultTreeModel tm = (DefaultTreeModel) userTree.getModel();
+        if (treeComponent instanceof User) {
+            tm.insertNodeInto(new DefaultMutableTreeNode(treeComponent), selection, selection.getChildCount());
+            userTree.expandRow(selection.getLevel());
         } else {
-            selectedNode.add(new DefaultMutableTreeNode(new User(newUserName)));
+            DefaultMutableTreeNode newRoot = new DefaultMutableTreeNode(treeComponent);
+            selection.add(newRoot);
+            tm.reload();
         }
+
     }
 
-    public JTree getUserTree(){
+
+    public JTree getUserTree() {
         return userTree;
     }
 
@@ -75,7 +71,8 @@ public class TreeView  {
         return userTree.getModel();
     }
 
-    public JPanel getTreeView(){
+
+    public JPanel getTreeView() {
         return treePanel;
     }
 }

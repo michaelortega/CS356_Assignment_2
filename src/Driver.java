@@ -10,7 +10,13 @@ import javax.swing.*;
 public class Driver {
     public static void main(String[] args)
     {
-        MainView mainView = new MainView();
-        MainController mainController = new MainController(mainView,mainView.getTreeViewModel());
+
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override public void run() {
+                MainView mainView = new MainView();
+                MainController mainController = new MainController(mainView,mainView.getTreeViewModel());
+            }
+        });
     }
 }

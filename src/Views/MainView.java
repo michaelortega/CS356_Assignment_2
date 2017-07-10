@@ -2,6 +2,7 @@ package Views;
 
 import Models.TreeComponent;
 import Models.User;
+import Models.UserGroup;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -165,11 +166,17 @@ public class MainView {
         JOptionPane.showMessageDialog(frame,err);
     }
 
-    public void addToJTree(DefaultMutableTreeNode lastSelectedPathComponent, TreeComponent user) {
-        treeView.add(lastSelectedPathComponent, (User) user);
+    public void addToJTree(DefaultMutableTreeNode lastSelectedPathComponent, TreeComponent treeComponent) {
+
+
+        treeView.add(lastSelectedPathComponent, treeComponent);
     }
 
     public void wrongComponentSelectedErr(String err) {
         JOptionPane.showMessageDialog(frame,err);
+    }
+
+    public String getGroupID() {
+        return getGroupIDTextfield().getText();
     }
 }
