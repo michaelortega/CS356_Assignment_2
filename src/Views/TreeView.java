@@ -24,10 +24,11 @@ public class TreeView  {
 
 
         mainRootGroup = new DefaultMutableTreeNode(new UserGroup("Root"));
-         treeModel = new DefaultTreeModel(mainRootGroup);
+        treeModel = new DefaultTreeModel(mainRootGroup);
         userTree = new JTree(mainRootGroup);
-        userTree.setSize(100,150);
         scrollPaneTree = new JScrollPane(userTree);
+        scrollPaneTree.setPreferredSize(new Dimension(300,500));
+
         initComponent();
 
 
@@ -39,19 +40,20 @@ public class TreeView  {
     private void initComponent() {
         treePanel = new JPanel();
         treePanel.setLayout(new BorderLayout());
-        treePanel.setBorder(new EmptyBorder(13, 5, 15, 5));
-        scrollPaneTree.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+       treePanel.setBorder(new EmptyBorder(13, 5, 15, 5));
+       scrollPaneTree.setBorder(new EmptyBorder(5, 5, 5, 5));
         treePanel.add(scrollPaneTree);
+
 
     }
 
     public void add(DefaultMutableTreeNode selection, User type) {
-        DefaultMutableTreeNode selectedNode = selection;
-        selectedNode.add(new DefaultMutableTreeNode(type));
-        treeModel.reload();
-
-
-
+        selection.add(new DefaultMutableTreeNode(type));
+        userTree.expandRow(selection.getLevel());
+        //treeModel.nodeStructureChanged(selection);
+        //treeModel.insertNodeInto(new DefaultMutableTreeNode(type),selection,selection.getChildCount());
+        //treeModel.reload();
     }
 
     public void addNewGroup(String newUserName) {

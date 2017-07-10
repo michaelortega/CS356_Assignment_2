@@ -28,4 +28,5 @@ public class UserGroup implements TreeComponent {
     public Class getType() {
         return UserGroup.class;
     }
+    
 }
