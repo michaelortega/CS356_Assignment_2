@@ -1,12 +1,14 @@
 package Views;
 
 import Models.TreeComponent;
+import Models.User;
 import Models.UserGroup;
 
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 
 public class TreeView implements View {
@@ -17,35 +19,9 @@ public class TreeView implements View {
     private DefaultMutableTreeNode mainRootGroup; //Main root in the JTree
 
     public TreeView() {
+
+
         mainRootGroup = new DefaultMutableTreeNode(new UserGroup("Root"));
-        DefaultMutableTreeNode p = new DefaultMutableTreeNode(new UserGroup("x-class"));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("Same fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-        mainRootGroup.add(new DefaultMutableTreeNode(new UserGroup("mike fisher")));
-
-        p.add(new DefaultMutableTreeNode(new UserGroup("xxxx")));
-        p.add(new DefaultMutableTreeNode(new UserGroup("xxxxx")));
-        p.add(new DefaultMutableTreeNode(new UserGroup("x")));
-
         userTree = new JTree(mainRootGroup);
         scrollPaneTree = new JScrollPane(userTree);
         initComponent();
@@ -56,40 +32,38 @@ public class TreeView implements View {
     private void initComponent() {
         treePanel = new JPanel();
         treePanel.setLayout(new BorderLayout());
-        treePanel.setBorder(new EmptyBorder(13,5,15,5));
-        scrollPaneTree.setBorder(new EmptyBorder(5,5,5,5));
+        treePanel.setBorder(new EmptyBorder(13, 5, 15, 5));
+        scrollPaneTree.setBorder(new EmptyBorder(5, 5, 5, 5));
         treePanel.add(scrollPaneTree);
 
     }
 
-    //Returns the root selected from JTree, used for addUserListener
-    public TreeComponent getRootSelected() {
-        return (TreeComponent) userTree.getLastSelectedPathComponent();
+    public void addNewUser(String newUserName) {
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) userTree.getLastSelectedPathComponent();
+        if (selectedNode == null) {
+            throw new NullPointerException("No User was selected");
+        } else if (selectedNode.getUserObject() instanceof User) {
+            throw new IllegalArgumentException("A user was selected, please select a group");
+        } else {
+            selectedNode.add(new DefaultMutableTreeNode(new User(newUserName)));
+        }
     }
 
-    //Returns the root selected from JTree, used for addUserListener
-    public String getRootSelectedTest() {
-        return ((TreeComponent)userTree.getLastSelectedPathComponent()).toString();
+    public void addNewGroup(String newUserName) {
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) userTree.getLastSelectedPathComponent();
+        if (selectedNode == null) {
+            throw new NullPointerException("No Group was selected");
+        } else if (selectedNode.getUserObject() instanceof User) {
+            throw new IllegalArgumentException("A user was selected, please select a group");
+        } else {
+            selectedNode.add(new DefaultMutableTreeNode(new User(newUserName)));
+        }
     }
+
 
     @Override
     public JPanel getView() {
         return treePanel;
     }
-
-//    public void addNewTreeUser(TreeComponent selectedTreeComponent, String newUserName) {
-//        if (selectedTreeComponent instanceof User){
-//            selectedTreeComponent.add(new DefaultMutableTreeNode(new User(newUserName)));
-//        }
-//        else if (selectedTreeComponent instanceof UserGroup){
-//
-//        }
-//        selectedTreeComponent.add(new DefaultMutableTreeNode(new User(newUserName)));
-//
-//    }
-
-
-
-
-
 }
+

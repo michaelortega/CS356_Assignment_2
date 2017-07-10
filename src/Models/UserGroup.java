@@ -18,4 +18,9 @@ public class UserGroup implements TreeComponent {
     public String displayOnJTree() {
         return groupID;
     }
+
+    @Override
+    public String displayID() {
+        return groupID;
+    }
 }

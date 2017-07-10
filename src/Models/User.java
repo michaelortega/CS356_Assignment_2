@@ -21,6 +21,11 @@ public class User implements TreeComponent{
     }
 
     @Override
+    public String displayID() {
+        return userName;
+    }
+
+    @Override
     public String toString() {
         return displayOnJTree();
     }

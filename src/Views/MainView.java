@@ -5,8 +5,8 @@ import java.awt.*;
 
 
 public class MainView {
-    private View treeView;
-    private View buttonsView;
+    private TreeView treeView;
+    private ButtonsView buttonsView;
 
     public MainView(){
         treeView = new TreeView();
@@ -26,5 +26,16 @@ public class MainView {
         panel.add(treeView.getView(),BorderLayout.WEST);
         panel.add(buttonsView.getView(),BorderLayout.EAST);
 
+
     }
+
+    public TreeView getTreeView() {
+        return treeView;
+    }
+
+    public ButtonsView getButtonsView() {
+        return buttonsView;
+    }
+
+
 }

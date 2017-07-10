@@ -3,10 +3,9 @@ package Views;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
-/**
- * Created by Michael on 7/7/2017.
- */
+
 public class ButtonsView implements View {
 
     private JButton addUserButton;
@@ -83,8 +82,52 @@ public class ButtonsView implements View {
 
     }
 
+    public JButton getAddUserButton() {
+        return addUserButton;
+    }
+
+    public void userButtonListener(ActionListener addUserButtonListener){
+        addUserButton.addActionListener(addUserButtonListener );
+    }
+
     @Override
     public JPanel getView(){
+        return buttonsPanel;
+    }
+
+    public JButton getAddGroupButton() {
+        return addGroupButton;
+    }
+
+    public JButton getOpenUserButton() {
+        return openUserButton;
+    }
+
+    public JTextField getUserIDTextfield() {
+        return userIDTextfield;
+    }
+
+    public JTextField getGroupIDTextfield() {
+        return groupIDTextfield;
+    }
+
+    public JButton getShowUserTotalButton() {
+        return showUserTotalButton;
+    }
+
+    public JButton getShowMessagesTotalButton() {
+        return showMessagesTotalButton;
+    }
+
+    public JButton getShowGroupTotalButton() {
+        return showGroupTotalButton;
+    }
+
+    public JButton getShowPositiveTotalButton() {
+        return showPositiveTotalButton;
+    }
+
+    public JPanel getButtonsPanel() {
         return buttonsPanel;
     }
 }

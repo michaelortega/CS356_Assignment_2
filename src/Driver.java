@@ -1,4 +1,6 @@
+import Controllers.MainController;
 import Views.MainView;
+import sun.applet.Main;
 
 import javax.swing.*;
 
@@ -8,11 +10,7 @@ import javax.swing.*;
 public class Driver {
     public static void main(String[] args)
     {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainView();
-            }
-        });
+        MainView mainView = new MainView();
+        MainController mainController = new MainController(mainView);
     }
 }
