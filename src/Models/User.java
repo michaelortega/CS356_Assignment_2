@@ -44,4 +44,7 @@ public class User implements TreeComponent {
     }
 
 
+    public void follow(User user) {
+        followingList.add(user);
+    }
 }

@@ -14,17 +14,20 @@ import java.util.Map;
 
 public class UserProfileView {
     private List<User> followingList;
+    private DefaultListModel<User> userDefaultListModel;
+    private DefaultListModel<String> newsFeedDefaultListModel;
     private List<String> newsFeedList;
     private User currentUser;
     private JList newsFeedJList;
     private JList followingJList;
-    private final List<String> defaultFollowingList = (Arrays.asList("Not currently following any users."));
-    private final List<String> defaultNewsFeed = (Arrays.asList("No News Feed to display"));
     private JButton postTweetButton;
     private JTextField tweetTextField;
-    private Map<String,TreeComponent> users;
-    private Map<String,TreeComponent> groups;
+    private Map<String, TreeComponent> users;
+    private Map<String, TreeComponent> groups;
     private JFrame userProfileFrame;
+    private JButton followUserButton;
+    private JTextField userNameTextField;
+
     public UserProfileView(User currentUser, Map<String, TreeComponent> users, Map<String, TreeComponent> groups) {
         this.currentUser = currentUser;
         followingList = currentUser.getFollowingList();
@@ -37,38 +40,51 @@ public class UserProfileView {
     }
 
     private void initListeners() {
+        followUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userName = userNameTextField.getText().toLowerCase();
+                if (!(users.containsKey(userName))|| currentUser.displayID().equals(userName) ) {
+                    JOptionPane.showMessageDialog(userProfileFrame, "Not a valid user");
+                } else {
+                    User userRequested = (User) users.get(userName);
+                    System.out.println(userRequested);
+                    userDefaultListModel.addElement(userRequested);
+                    currentUser.follow(userRequested);
+
+                }
+            }
+        });
+
         postTweetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String userName = tweetTextField.getText();
-                if (!(users.containsKey(userName))){
-                    JOptionPane.showMessageDialog(,"Not a valid user");
-                }
+                String tweet = currentUser.displayID()+" : "+tweetTextField.getText();
+                newsFeedDefaultListModel.addElement(tweet);
             }
         });
     }
 
     private void initJLists() {
-        if (followingList.size() <= 0) {
-            followingJList = new JList(defaultFollowingList.toArray());
-        } else {
-            followingJList = new JList(followingList.toArray());
+        userDefaultListModel = new DefaultListModel<>();
+        for (User user : followingList) {
+            userDefaultListModel.addElement(user);
         }
+        followingJList = new JList(userDefaultListModel);
 
-        if (newsFeedList.size() <= 0) {
-            newsFeedJList = new JList(defaultFollowingList.toArray());
-        } else {
-            newsFeedJList = new JList(newsFeedList.toArray());
+        newsFeedDefaultListModel = new DefaultListModel<>();
+        for (String feed : newsFeedList) {
+            newsFeedDefaultListModel.addElement(feed);
         }
-
+        newsFeedJList = new JList(newsFeedDefaultListModel);
     }
 
     private void initView(User user) {
         userProfileFrame = new JFrame(user.displayID() + " Profile");
         userProfileFrame.setVisible(true);
         userProfileFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        JTextField userNameTextField = new JTextField();
-        JButton followUserButton = new JButton("Follow User");
+        userNameTextField = new JTextField();
+        followUserButton = new JButton("Follow User");
         userProfileFrame.setSize(700, 400);
         userProfileFrame.setResizable(false);
 
@@ -77,12 +93,12 @@ public class UserProfileView {
 
 
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(1,2));
+        topPanel.setLayout(new GridLayout(1, 2));
         topPanel.add(userNameTextField);
         topPanel.add(followUserButton);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(5,5));
+        centerPanel.setLayout(new GridLayout(5, 5));
         centerPanel.add(followingJList);
 
         JPanel tweetPanel = new JPanel();
@@ -90,8 +106,9 @@ public class UserProfileView {
         tweetPanel.add(tweetTextField);
         tweetPanel.add(postTweetButton);
 
+
         JPanel bottomPanel = new JPanel();
-        bottomPanel.add(newsFeedJList,BorderLayout.CENTER);
+        bottomPanel.add(newsFeedJList, BorderLayout.CENTER);
 
         JPanel mainPanel = new JPanel();
 
