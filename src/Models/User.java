@@ -7,13 +7,11 @@ public class User implements TreeComponent{
     private String userName;
     private List<User> followingList;
     private List<String> newsFeedList;
-    private final String defaultFollwingList = "Not currently following any users.";
     private final String defaultNewsFeedList = "News Feed is currently empty.";
 
     public User(String userName) {
         this.userName = userName;
         followingList = new ArrayList<>();
-        followingList.add(defaultFollwingList);
         newsFeedList.add(defaultNewsFeedList);
         newsFeedList = new ArrayList<>();
     }
