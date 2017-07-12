@@ -12,6 +12,7 @@ public class User implements TreeComponent {
         this.userName = userName;
         followingList = new ArrayList<>();
         newsFeedList = new ArrayList<>();
+
     }
 
     public List<User> getFollowingList() {

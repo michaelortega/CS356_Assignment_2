@@ -79,15 +79,14 @@ public class MainController {
                     }
                 }
             }
-
         });
 
         mainView.getUserProfileButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
-                if (selectionType instanceof User){
-                new UserProfileView((User) selectionType);
+                if (selectionType instanceof User) {
+                    new UserProfileView((User) selectionType, users,groups);
                 } else {
                     mainView.displayErrorMessage("Please Select a User not a Group or Root. ");
                 }
@@ -108,6 +107,5 @@ public class MainController {
         return mainView.getJtree().getLastSelectedPathComponent() == null;
 
     }
-
 
 }
