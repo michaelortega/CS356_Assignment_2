@@ -3,25 +3,25 @@ package Models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements TreeComponent{
+public class User implements TreeComponent {
     private String userName;
     private List<User> followingList;
     private List<String> newsFeedList;
-    private final String defaultNewsFeedList = "News Feed is currently empty.";
 
     public User(String userName) {
         this.userName = userName;
         followingList = new ArrayList<>();
-        newsFeedList.add(defaultNewsFeedList);
         newsFeedList = new ArrayList<>();
     }
-    public List<User> getFollowingList(){
+
+    public List<User> getFollowingList() {
         return followingList;
     }
 
     public List<String> getNewsFeed() {
         return newsFeedList;
     }
+
     @Override
     public String displayOnJTree() {
         return userName;
