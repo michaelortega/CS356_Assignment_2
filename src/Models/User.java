@@ -2,8 +2,10 @@ package Models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class User implements TreeComponent {
+public class User extends Observable implements TreeComponent, Observer {
     private String userName;
     private List<User> followingList;
     private List<String> newsFeedList;
@@ -43,8 +45,24 @@ public class User implements TreeComponent {
         return displayOnJTree();
     }
 
+    @Override
+    public synchronized void addObserver(Observer o) {
+        followingList.add((User)o);
+    }
 
-    public void follow(User user) {
-        followingList.add(user);
+//    public void follow(User user) {
+//        followingList.add(user);
+//    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (User following: followingList){
+            following.update(User,);
+        }
     }
 }

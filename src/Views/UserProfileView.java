@@ -3,16 +3,16 @@ package Views;
 import Models.TreeComponent;
 import Models.User;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
-public class UserProfileView {
+public class UserProfileView extends Observable {
     private List<User> followingList;
     private DefaultListModel<User> userDefaultListModel;
     private DefaultListModel<String> newsFeedDefaultListModel;
@@ -50,17 +50,20 @@ public class UserProfileView {
                     User userRequested = (User) users.get(userName);
                     System.out.println(userRequested);
                     userDefaultListModel.addElement(userRequested);
-                    currentUser.follow(userRequested);
+                    //currentUser.follow(userRequested);
 
                 }
             }
         });
 
+        //Post tweet action listener
         postTweetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String tweet = currentUser.displayID()+" : "+tweetTextField.getText();
+
                 newsFeedDefaultListModel.addElement(tweet);
+
             }
         });
     }
