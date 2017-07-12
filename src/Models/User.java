@@ -3,9 +3,6 @@ package Models;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Michael on 7/7/2017.
- */
 public class User implements TreeComponent{
     private String userName;
     private List<User> followingList;

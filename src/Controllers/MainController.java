@@ -4,6 +4,7 @@ import Models.TreeComponent;
 import Models.User;
 import Models.UserGroup;
 import Views.MainView;
+import Views.UserProfileView;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
@@ -34,7 +35,7 @@ public class MainController {
             public void actionPerformed(ActionEvent actionEvent) {
 
                 if (isSelectionNull()) {
-                    mainView.noGroupSelectedError("Nothing was selected");
+                    mainView.displayErrorMessage("Nothing was selected");
                 } else {
                     DefaultMutableTreeNode selectionNode = (DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent();
                     TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
@@ -47,7 +48,7 @@ public class MainController {
                             users.put(newUserName, new User(newUserName));
                             mainView.addToJTree(selectionNode, new User(newUserName));
                         } else {
-                            mainView.noneUniqueUserNameError("User name is already taken, please enter a unique user name");
+                            mainView.displayErrorMessage("User name is already taken, please enter a unique user name");
                         }
                     }
                 }
@@ -55,11 +56,13 @@ public class MainController {
             }
         });
 
+
+        // Listener to add a group to JTree
         mainView.getAddGroupButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isSelectionNull()) {
-                    mainView.noGroupSelectedError("Nothing was selected");
+                    mainView.displayErrorMessage("Nothing was selected");
                 } else {
                     DefaultMutableTreeNode selectionNode = (DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent();
                     TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
@@ -71,14 +74,25 @@ public class MainController {
                             groups.put(newGroupName, new UserGroup(newGroupName));
                             mainView.addToJTree(selectionNode, new UserGroup(newGroupName));
                         } else {
-                            mainView.noneUniqueUserNameError("Group is already taken, please enter a unique group name");
+                            mainView.displayErrorMessage("Group is already taken, please enter a unique group name");
                         }
                     }
                 }
             }
+
         });
 
-
+        mainView.getUserProfileButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
+                if (selectionType instanceof User){
+                new UserProfileView(selectionType);
+                } else {
+                    mainView.wrongComponentSelectedErr("Please Select a User not a Group or Root. ");
+                }
+            }
+        });
     }
 
     private boolean isUniqueGroup(String newGroupName) {

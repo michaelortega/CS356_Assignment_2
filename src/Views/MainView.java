@@ -154,16 +154,12 @@ public class MainView {
     }
 
 
-    public void noGroupSelectedError(String err) {
+    public void displayErrorMessage(String err) {
         JOptionPane.showMessageDialog(frame,err);
     }
 
     public String getUserID() {
         return userIDTextfield.getText();
-    }
-
-    public void noneUniqueUserNameError(String err) {
-        JOptionPane.showMessageDialog(frame,err);
     }
 
     public void addToJTree(DefaultMutableTreeNode lastSelectedPathComponent, TreeComponent treeComponent) {
@@ -178,5 +174,9 @@ public class MainView {
 
     public String getGroupID() {
         return getGroupIDTextfield().getText();
+    }
+
+    public JButton getUserProfileButton() {
+        return openUserButton;
     }
 }
