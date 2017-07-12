@@ -40,7 +40,7 @@ public class MainController {
                     DefaultMutableTreeNode selectionNode = (DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent();
                     TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
                     if (selectionType instanceof User) {
-                        mainView.wrongComponentSelectedErr("A user was selected please select a Group to add a user to.");
+                        mainView.displayErrorMessage("A user was selected please select a Group to add a user to.");
                     } else {
                         String newUserName = mainView.getUserID();
                         if (isUniqueUser(newUserName)) {
@@ -67,7 +67,7 @@ public class MainController {
                     DefaultMutableTreeNode selectionNode = (DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent();
                     TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
                     if (selectionType instanceof User) {
-                        mainView.wrongComponentSelectedErr("A user was selected please select a Root group.");
+                        mainView.displayErrorMessage("A user was selected please select a Root group.");
                     } else {
                         String newGroupName = mainView.getGroupID();
                         if (isUniqueGroup(newGroupName)) {
@@ -87,9 +87,9 @@ public class MainController {
             public void actionPerformed(ActionEvent e) {
                 TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
                 if (selectionType instanceof User){
-                new UserProfileView(selectionType);
+                new UserProfileView((User) selectionType);
                 } else {
-                    mainView.wrongComponentSelectedErr("Please Select a User not a Group or Root. ");
+                    mainView.displayErrorMessage("Please Select a User not a Group or Root. ");
                 }
             }
         });

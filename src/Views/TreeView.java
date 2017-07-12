@@ -21,8 +21,8 @@ public class TreeView {
     private DefaultMutableTreeNode mainRootGroup; //Main root in the JTree
     private DefaultTreeModel treeModel;
 
-    public TreeView() {
 
+    public TreeView() {
 
         treeModel = new DefaultTreeModel(mainRootGroup);
         mainRootGroup = new DefaultMutableTreeNode(new UserGroup("Root"));

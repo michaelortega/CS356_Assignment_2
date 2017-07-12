@@ -168,9 +168,6 @@ public class MainView {
         treeView.add(lastSelectedPathComponent, treeComponent);
     }
 
-    public void wrongComponentSelectedErr(String err) {
-        JOptionPane.showMessageDialog(frame,err);
-    }
 
     public String getGroupID() {
         return getGroupIDTextfield().getText();
