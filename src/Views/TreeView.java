@@ -7,9 +7,14 @@ import Models.UserGroup;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
 public class TreeView {
@@ -24,9 +29,20 @@ public class TreeView {
     public TreeView() {
 
         treeModel = new DefaultTreeModel(mainRootGroup);
+        treeModel.setAsksAllowsChildren(true);
         mainRootGroup = new DefaultMutableTreeNode(new UserGroup("Root"));
-        mainRootGroup.add(new DefaultMutableTreeNode(new User("d")));
         userTree = new JTree(mainRootGroup);
+        userTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        CustomIconRenderer renderer = new CustomIconRenderer();
+        userTree.setCellRenderer(renderer);
+
+
+
+
+
+
+
+
         treeModel.setRoot(mainRootGroup);
         scrollPaneTree = new JScrollPane(userTree);
         scrollPaneTree.setPreferredSize(new Dimension(300, 500));
@@ -62,6 +78,7 @@ public class TreeView {
     }
 
 
+
     public JTree getUserTree() {
         return userTree;
     }
@@ -74,5 +91,6 @@ public class TreeView {
     public JPanel getTreeView() {
         return treePanel;
     }
+
 }
 

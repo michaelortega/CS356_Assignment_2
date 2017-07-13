@@ -92,7 +92,6 @@ public class MainController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
-                System.out.println(selectionType.displayID()+"  "+ selectionType.hashCode());
                 if (selectionType instanceof User) {
                     new UserProfileView((User) selectionType);
                 } else {

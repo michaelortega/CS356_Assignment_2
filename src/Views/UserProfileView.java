@@ -53,7 +53,6 @@ public class UserProfileView {
 
         //Post tweet action listener
         postTweetButton.addActionListener(e -> {
-            System.out.println("USER TO FOLLOW:"+ currentUser.displayID()+"   HASH CODE:"+ currentUser.hashCode());
             String tweet = currentUser.displayID() + " : " + tweetTextField.getText();
             if (!tweet.equals("")) {
                 newsFeedDefaultListModel.addElement(tweet);
