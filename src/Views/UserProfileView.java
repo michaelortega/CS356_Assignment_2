@@ -44,15 +44,13 @@ public class UserProfileView extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userName = userNameTextField.getText().toLowerCase();
-                if (!(users.containsKey(userName))|| currentUser.displayID().equals(userName) ) {
+                if (!(users.containsKey(userName)) || currentUser.displayID().equals(userName) || userName.equals("")) {
                     JOptionPane.showMessageDialog(userProfileFrame, "Not a valid user");
                 } else {
                     User userRequested = (User) users.get(userName);
-                    System.out.println(userRequested);
                     userDefaultListModel.addElement(userRequested);
-                    //currentUser.follow(userRequested);
-                    currentUser.addObserver(userRequested);
-
+                    currentUser.follow(userRequested);
+                    userRequested.addObserver(currentUser);
                 }
             }
         });
@@ -61,11 +59,16 @@ public class UserProfileView extends Observable {
         postTweetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String tweet = currentUser.displayID()+" : "+tweetTextField.getText();
+                String tweet = currentUser.displayID() + " : " + tweetTextField.getText();
+                if (!tweet.equals("")) {
+                    newsFeedDefaultListModel.addElement(tweet);
+                    currentUser.addNewsFeedTweet(tweet);
+                    currentUser.notifyObservers(newsFeedDefaultListModel);
+                    
+                } else {
+                    JOptionPane.showMessageDialog(userProfileFrame, "Tweet can not be empty");
+                }
 
-                newsFeedDefaultListModel.addElement(tweet);
-                currentUser.addNewsFeedTweet(tweet);
-                currentUser.notifyObservers();
 
             }
         });

@@ -79,7 +79,7 @@ public class MainView {
     private void initView() {
         frame = new JFrame("Mini Twitter - Michael Ortega - CS 365");
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(700,400);
         frame.setResizable(false);
         JPanel panel = new JPanel();

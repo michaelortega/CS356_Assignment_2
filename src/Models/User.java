@@ -1,5 +1,6 @@
 package Models;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -9,11 +10,13 @@ public class User extends Observable implements TreeComponent, Observer {
     private String userName;
     private List<User> followingList;
     private List<String> newsFeedList;
+    private List<User> followersList;
 
     public User(String userName) {
         this.userName = userName;
         followingList = new ArrayList<>();
         newsFeedList = new ArrayList<>();
+        followersList = new ArrayList<>();
 
     }
 
@@ -47,22 +50,29 @@ public class User extends Observable implements TreeComponent, Observer {
 
     @Override
     public synchronized void addObserver(Observer o) {
-        followingList.add((User)o);
+        followersList.add((User) o);
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        this.newsFeedList.add((String)arg);
+    public void update( Object arg)
+    {
+        this.newsFeedList.add((String) arg);
     }
+
+
 
     @Override
     public void notifyObservers() {
-        for (User following: followingList){
-            following.update(following,newsFeedList.get(newsFeedList.size() - 1));
+        for (User followers : followersList) {
+            followers.update(newsFeedList.get(newsFeedList.size() - 1));
         }
     }
 
     public void addNewsFeedTweet(String tweet) {
         newsFeedList.add(tweet);
+    }
+
+    public void follow(User userRequested) {
+        followingList.add(userRequested);
     }
 }
