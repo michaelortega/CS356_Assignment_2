@@ -40,14 +40,21 @@ public class UserProfileView {
 
         followUserButton.addActionListener(e -> {
             String userName = userNameTextField.getText().toLowerCase();
-            if (MainController.isValidUser(userName) || currentUser.displayID().equals(userName) || userName.equals("")) {
-                JOptionPane.showMessageDialog(userProfileFrame, "Not a valid user");
+
+
+            if (MainController.isValidUser(userName)) {
+                JOptionPane.showMessageDialog(userProfileFrame, "Error: Not a valid User ");
+            } else if (currentUser.displayID().equals(userName)) {
+                JOptionPane.showMessageDialog(userProfileFrame, "Error: You Cannot follow yourself");
+            } else if (currentUser.isFollowing(userName)) {
+                JOptionPane.showMessageDialog(userProfileFrame, "Error: Already following " + userName);
+
             } else {
                 User userRequested = MainController.getUserFromKey(userName);
-                System.out.println("USER TO FOLLOW:" + userRequested.displayID() + "   HASH CODE:" + userRequested.hashCode());
                 userDefaultListModel.addElement(userRequested);
                 currentUser.follow(userRequested);
                 userRequested.addObserver(currentUser);
+                userNameTextField.setText("");
             }
         });
 
@@ -57,8 +64,9 @@ public class UserProfileView {
             String tweet = currentUser.displayID() + " : " + tweetMsg;
             if (!tweet.equals("")) {
                 newsFeedDefaultListModel.addElement(tweet);
-                currentUser.addNewsFeedTweet(tweet,tweetMsg );
+                currentUser.addNewsFeedTweet(tweet, tweetMsg);
                 currentUser.notifyObservers();
+                tweetTextField.setText("");
 
             } else {
                 JOptionPane.showMessageDialog(userProfileFrame, "Tweet can not be empty");

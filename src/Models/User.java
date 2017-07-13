@@ -113,4 +113,12 @@ public class User extends Observable implements TreeComponent, Observer, Visitab
     }
 
 
+    public boolean isFollowing(String userName) {
+        for (User user: followingList){
+            if (user.displayID().toLowerCase().equals(userName.toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
