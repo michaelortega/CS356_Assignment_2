@@ -51,6 +51,7 @@ public class UserProfileView extends Observable {
                     System.out.println(userRequested);
                     userDefaultListModel.addElement(userRequested);
                     //currentUser.follow(userRequested);
+                    currentUser.addObserver(userRequested);
 
                 }
             }
@@ -63,6 +64,8 @@ public class UserProfileView extends Observable {
                 String tweet = currentUser.displayID()+" : "+tweetTextField.getText();
 
                 newsFeedDefaultListModel.addElement(tweet);
+                currentUser.addNewsFeedTweet(tweet);
+                currentUser.notifyObservers();
 
             }
         });

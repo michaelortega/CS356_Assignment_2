@@ -50,19 +50,19 @@ public class User extends Observable implements TreeComponent, Observer {
         followingList.add((User)o);
     }
 
-//    public void follow(User user) {
-//        followingList.add(user);
-//    }
-
     @Override
     public void update(Observable o, Object arg) {
-
+        this.newsFeedList.add((String)arg);
     }
 
     @Override
     public void notifyObservers() {
         for (User following: followingList){
-            following.update(User,);
+            following.update(following,newsFeedList.get(newsFeedList.size() - 1));
         }
+    }
+
+    public void addNewsFeedTweet(String tweet) {
+        newsFeedList.add(tweet);
     }
 }
