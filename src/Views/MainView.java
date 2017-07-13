@@ -1,13 +1,10 @@
 package Views;
 
 import Models.TreeComponent;
-import Models.User;
-import Models.UserGroup;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import java.awt.*;
 
@@ -28,7 +25,8 @@ public class MainView {
     private JButton showPositiveTotalButton;
     private JPanel buttonsPanel;
 
-    private JFrame frame ;
+
+    private JFrame frame;
 
     public JButton getAddUserButton() {
         return addUserButton;
@@ -70,7 +68,7 @@ public class MainView {
         return buttonsPanel;
     }
 
-    public MainView(){
+    public MainView() {
         treeView = new TreeView();
         initButtons();
         initView();
@@ -80,21 +78,23 @@ public class MainView {
         frame = new JFrame("Mini Twitter - Michael Ortega - CS 365");
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(700,400);
+        frame.setSize(700, 400);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         frame.add(panel);
-        panel.add(treeView.getTreeView(),BorderLayout.WEST);
-        panel.add(buttonsPanel,BorderLayout.EAST);
+        panel.add(treeView.getTreeView(), BorderLayout.WEST);
+        panel.add(buttonsPanel, BorderLayout.EAST);
 
     }
+
     private void initButtons() {
         //init top buttons
         addUserButton = new JButton("Add User");
         addGroupButton = new JButton("Add Group");
         openUserButton = new JButton("Open User View");
-        openUserButton.setSize(304,30);
+        openUserButton.setSize(304, 30);
 
         //init top text fields
         userIDTextfield = new JTextField();
@@ -107,8 +107,8 @@ public class MainView {
         showPositiveTotalButton = new JButton("Show positive percentage");
         //Top Panel UI
         JPanel topButtonPanel = new JPanel();
-        topButtonPanel.setLayout(new GridLayout(2,2,5,5));
-        topButtonPanel.setBorder(new EmptyBorder(18,0,0,15));
+        topButtonPanel.setLayout(new GridLayout(2, 2, 5, 5));
+        topButtonPanel.setBorder(new EmptyBorder(18, 0, 0, 15));
         topButtonPanel.add(userIDTextfield);
         topButtonPanel.add(addUserButton);
         //Inner top panel UI
@@ -118,18 +118,18 @@ public class MainView {
         //Center Panel UI
         JPanel centerButtonPanel = new JPanel();
         centerButtonPanel.setLayout(new BorderLayout());
-        centerButtonPanel.setBorder(new EmptyBorder(5,0,5,15));
+        centerButtonPanel.setBorder(new EmptyBorder(5, 0, 5, 15));
 
         JPanel innerCenterPanel = new JPanel();
         centerButtonPanel.setLayout(new BorderLayout());
-        innerCenterPanel.add(openUserButton,BorderLayout.CENTER);
+        innerCenterPanel.add(openUserButton, BorderLayout.CENTER);
 
         centerButtonPanel.add(innerCenterPanel);
 
         //Bottom Panel UI
         JPanel bottomButtonPanel = new JPanel();
-        bottomButtonPanel.setLayout(new GridLayout(2,2,5,5));
-        bottomButtonPanel.setBorder(new EmptyBorder(0,0,15,15));
+        bottomButtonPanel.setLayout(new GridLayout(2, 2, 5, 5));
+        bottomButtonPanel.setBorder(new EmptyBorder(0, 0, 15, 15));
         bottomButtonPanel.add(showGroupTotalButton);
         bottomButtonPanel.add(showUserTotalButton);
         bottomButtonPanel.add(showMessagesTotalButton);
@@ -139,7 +139,7 @@ public class MainView {
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BorderLayout());
         buttonsPanel.add(topButtonPanel, BorderLayout.NORTH);
-        buttonsPanel.add(centerButtonPanel,BorderLayout.CENTER);
+        buttonsPanel.add(centerButtonPanel, BorderLayout.CENTER);
         buttonsPanel.add(bottomButtonPanel, BorderLayout.SOUTH);
 
 
@@ -149,13 +149,13 @@ public class MainView {
         return treeView.getModel();
     }
 
-    public JTree getJtree(){
+    public JTree getJtree() {
         return treeView.getUserTree();
     }
 
 
     public void displayErrorMessage(String err) {
-        JOptionPane.showMessageDialog(frame,err);
+        JOptionPane.showMessageDialog(frame, err);
     }
 
     public String getUserID() {

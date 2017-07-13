@@ -7,7 +7,6 @@ import Views.MainView;
 import Views.UserProfileView;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -15,20 +14,27 @@ import java.util.Map;
 
 public class MainController {
     private MainView mainView;
-    private Map<String, TreeComponent> users;
-    private Map<String, TreeComponent> groups;
-    private TreeModel treeModel;
+    private static Map<String, TreeComponent> users;
+    private static Map<String, TreeComponent> groups;
+    private static MainController instance = null;
 
-    public MainController(MainView mainView, TreeModel treeViewModel) {
-        this.mainView = mainView;
-        treeModel = treeViewModel;
+    private MainController(){
+        mainView = new MainView();
         users = new HashMap<>();
         groups = new HashMap<>();
         initListeners();
 
     }
 
+    public static MainController getInstance(){
+        if (instance == null){
+            return new MainController();
+        } else {
+            return instance;
+        }
+    }
 
+    //add user
     private void initListeners() {
         mainView.getAddUserButton().addActionListener(new ActionListener() {
             @Override
@@ -42,11 +48,12 @@ public class MainController {
                     if (selectionType instanceof User) {
                         mainView.displayErrorMessage("A user was selected please select a Group to add a user to.");
                     } else {
-                        String newUserName = mainView.getUserID();
-                        if (isUniqueUser(newUserName)) {
-
-                            users.put(newUserName, new User(newUserName));
-                            mainView.addToJTree(selectionNode, new User(newUserName));
+                        String newUserName = mainView.getUserID().toLowerCase();
+                        if (isValidUser(newUserName)) {
+                            User newUser = new User(newUserName);
+                            users.put(newUserName, newUser);
+                            mainView.addToJTree(selectionNode, newUser);
+                            mainView.getUserIDTextfield().setText("");
                         } else {
                             mainView.displayErrorMessage("User name is already taken, please enter a unique user name");
                         }
@@ -85,8 +92,9 @@ public class MainController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TreeComponent selectionType = (TreeComponent) ((DefaultMutableTreeNode) mainView.getJtree().getLastSelectedPathComponent()).getUserObject();
+                System.out.println(selectionType.displayID()+"  "+ selectionType.hashCode());
                 if (selectionType instanceof User) {
-                    new UserProfileView((User) selectionType, users,groups);
+                    new UserProfileView((User) selectionType);
                 } else {
                     mainView.displayErrorMessage("Please Select a User not a Group or Root. ");
                 }
@@ -98,14 +106,16 @@ public class MainController {
         return !(groups.containsKey(newGroupName.toLowerCase()));
     }
 
-
-    private boolean isUniqueUser(String newUserName) {
-        return !(users.containsKey(newUserName.toLowerCase()));
-    }
-
     private boolean isSelectionNull() {
         return mainView.getJtree().getLastSelectedPathComponent() == null;
 
+    }
+    public static boolean isValidUser(String request){
+        return !(users.containsKey(request.toLowerCase()));
+    }
+
+    public static User getUserFromKey(String key){
+        return (User)users.get(key);
     }
 
 }

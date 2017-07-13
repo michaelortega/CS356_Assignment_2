@@ -8,9 +8,10 @@ import Models.UserGroup;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellEditor;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 
 public class TreeView {
@@ -27,8 +28,8 @@ public class TreeView {
         treeModel = new DefaultTreeModel(mainRootGroup);
         mainRootGroup = new DefaultMutableTreeNode(new UserGroup("Root"));
         mainRootGroup.add(new DefaultMutableTreeNode(new User("d")));
-        treeModel.setRoot(mainRootGroup);
         userTree = new JTree(mainRootGroup);
+        treeModel.setRoot(mainRootGroup);
         scrollPaneTree = new JScrollPane(userTree);
         scrollPaneTree.setPreferredSize(new Dimension(300, 500));
 

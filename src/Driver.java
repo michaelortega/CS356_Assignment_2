@@ -14,8 +14,7 @@ public class Driver {
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override public void run() {
-                MainView mainView = new MainView();
-                MainController mainController = new MainController(mainView,mainView.getTreeViewModel());
+                MainController mainController = MainController.getInstance();
             }
         });
     }
