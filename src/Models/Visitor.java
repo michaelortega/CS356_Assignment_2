@@ -3,5 +3,6 @@ package Models;
 /**
  * Created by Michael on 7/13/2017.
  */
-public interface Vistor {
+public interface Visitor {
+    public void visit(User user);
 }

@@ -44,7 +44,7 @@ public class UserProfileView {
                 JOptionPane.showMessageDialog(userProfileFrame, "Not a valid user");
             } else {
                 User userRequested = MainController.getUserFromKey(userName);
-                System.out.println("USER TO FOLLOW:"+ userRequested.displayID()+"   HASH CODE:"+ userRequested.hashCode());
+                System.out.println("USER TO FOLLOW:" + userRequested.displayID() + "   HASH CODE:" + userRequested.hashCode());
                 userDefaultListModel.addElement(userRequested);
                 currentUser.follow(userRequested);
                 userRequested.addObserver(currentUser);
@@ -53,10 +53,11 @@ public class UserProfileView {
 
         //Post tweet action listener
         postTweetButton.addActionListener(e -> {
-            String tweet = currentUser.displayID() + " : " + tweetTextField.getText();
+            String tweetMsg = tweetTextField.getText();
+            String tweet = currentUser.displayID() + " : " + tweetMsg;
             if (!tweet.equals("")) {
                 newsFeedDefaultListModel.addElement(tweet);
-                currentUser.addNewsFeedTweet(tweet);
+                currentUser.addNewsFeedTweet(tweet,tweetMsg );
                 currentUser.notifyObservers();
 
             } else {
@@ -96,7 +97,7 @@ public class UserProfileView {
 
 
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(1, 2,5,5));
+        topPanel.setLayout(new GridLayout(1, 2, 5, 5));
         topPanel.add(userNameTextField);
         topPanel.add(followUserButton);
 
@@ -107,7 +108,6 @@ public class UserProfileView {
         tweetPanel.setLayout(new GridLayout());
         tweetPanel.add(tweetTextField);
         tweetPanel.add(postTweetButton);
-
 
 
         JPanel bottomPanel = new JPanel();
@@ -124,7 +124,6 @@ public class UserProfileView {
         userProfileFrame.add(mainPanel);
         userProfileFrame.setVisible(true);
     }
-
 
 
 }

@@ -6,6 +6,5 @@ import java.util.List;
 public interface TreeComponent {
     String displayOnJTree();
     String displayID();
-    Class getType();
 
 }

@@ -145,10 +145,6 @@ public class MainView {
 
     }
 
-    public TreeModel getTreeViewModel() {
-        return treeView.getModel();
-    }
-
     public JTree getJtree() {
         return treeView.getUserTree();
     }
@@ -168,6 +164,9 @@ public class MainView {
         treeView.add(lastSelectedPathComponent, treeComponent);
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
 
     public String getGroupID() {
         return getGroupIDTextfield().getText();

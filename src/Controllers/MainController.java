@@ -1,15 +1,20 @@
 package Controllers;
 
+import Models.MessagesTotalVisitor;
+import Models.PositiveWordsVisitor;
 import Models.TreeComponent;
 import Models.User;
 import Models.UserGroup;
+import Models.Visitor;
 import Views.MainView;
 import Views.UserProfileView;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MainController {
@@ -18,7 +23,7 @@ public class MainController {
     private static Map<String, TreeComponent> groups;
     private static MainController instance = null;
 
-    private MainController(){
+    private MainController() {
         mainView = new MainView();
         users = new HashMap<>();
         groups = new HashMap<>();
@@ -26,15 +31,15 @@ public class MainController {
 
     }
 
-    public static MainController getInstance(){
-        if (instance == null){
+    public static MainController getInstance() {
+        if (instance == null) {
             return new MainController();
         } else {
             return instance;
         }
     }
 
-    //add user
+
     private void initListeners() {
         mainView.getAddUserButton().addActionListener(new ActionListener() {
             @Override
@@ -64,7 +69,7 @@ public class MainController {
         });
 
 
-        // Listener to add a group to JTree
+        // UserGroup Listener
         mainView.getAddGroupButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,6 +85,7 @@ public class MainController {
                         if (isUniqueGroup(newGroupName)) {
                             groups.put(newGroupName, new UserGroup(newGroupName));
                             mainView.addToJTree(selectionNode, new UserGroup(newGroupName));
+                            mainView.getGroupIDTextfield().setText("");
                         } else {
                             mainView.displayErrorMessage("Group is already taken, please enter a unique group name");
                         }
@@ -99,6 +105,51 @@ public class MainController {
                 }
             }
         });
+
+        mainView.getShowMessagesTotalButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                MessagesTotalVisitor visitor = new MessagesTotalVisitor();
+                User u = null;
+                Iterator itr = users.entrySet().iterator();
+                while (itr.hasNext()) {
+                    Map.Entry pair = (Map.Entry) itr.next();
+                    u = (User) pair.getValue();
+                    u.accept(visitor);
+                }
+                String count = String.valueOf(visitor.getMessagesCount());
+                displayMessage("Number of total messages: " + count);
+            }
+        });
+
+        mainView.getShowPositiveTotalButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                PositiveWordsVisitor positiveWordsVisitor = new PositiveWordsVisitor();
+                iterateHashMap(positiveWordsVisitor);
+                String count = String.valueOf(positiveWordsVisitor.getPositiveCount());
+                displayMessage("Total number of positive words: " + count);
+
+            }
+        });
+
+        mainView.getShowGroupTotalButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                displayMessage("Number of total group: "+ groups.size());
+            }
+        });
+
+        mainView.getShowUserTotalButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                displayMessage("Number of total users: "+ users.size());
+            }
+        });
+    }
+
+    private void displayMessage(String msg) {
+        JOptionPane.showMessageDialog(mainView.getFrame(), msg);
     }
 
     private boolean isUniqueGroup(String newGroupName) {
@@ -109,12 +160,31 @@ public class MainController {
         return mainView.getJtree().getLastSelectedPathComponent() == null;
 
     }
-    public static boolean isValidUser(String request){
+
+    public static boolean isValidUser(String request) {
         return !(users.containsKey(request.toLowerCase()));
     }
 
-    public static User getUserFromKey(String key){
-        return (User)users.get(key);
+    public static User getUserFromKey(String key) {
+        return (User) users.get(key);
     }
 
+    public static Map<String, TreeComponent> getUsers() {
+        return users;
+    }
+
+    public static Map<String, TreeComponent> getGroups() {
+        return groups;
+    }
+
+    public void iterateHashMap(Visitor v) {
+        User u = null;
+        Iterator itr = users.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry pair = (Map.Entry) itr.next();
+            u = (User) pair.getValue();
+            u.accept(v);
+        }
+    }
 }
+

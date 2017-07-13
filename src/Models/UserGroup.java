@@ -8,7 +8,7 @@ public class UserGroup implements TreeComponent {
         this.groupID = groupID;
     }
 
-    //Used to display groupID in JTree
+
     @Override
     public String toString() {
         return displayOnJTree();
@@ -24,9 +24,6 @@ public class UserGroup implements TreeComponent {
         return groupID;
     }
 
-    @Override
-    public Class getType() {
-        return UserGroup.class;
-    }
+
 
 }
