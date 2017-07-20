@@ -1,11 +1,6 @@
 package Controllers;
 
-import Models.MessagesTotalVisitor;
-import Models.PositiveWordsVisitor;
-import Models.TreeComponent;
-import Models.User;
-import Models.UserGroup;
-import Models.Visitor;
+import Models.*;
 import Views.MainView;
 import Views.UserProfileView;
 
@@ -13,13 +8,13 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class MainController {
     private MainView mainView;
     private static Map<String, TreeComponent> users;
+    private List<User> userList = new ArrayList<>();
+    private List<UserGroup> groupList = new ArrayList<>();
     private static Map<String, TreeComponent> groups;
     private static MainController instance = null;
 
@@ -54,14 +49,15 @@ public class MainController {
                         mainView.displayErrorMessage("A user was selected please select a Group to add a user to.");
                     } else {
                         String newUserName = mainView.getUserID().toLowerCase();
-                        if (isValidUser(newUserName)) {
-                            User newUser = new User(newUserName);
-                            users.put(newUserName, newUser);
-                            mainView.addToJTree(selectionNode, newUser);
-                            mainView.getUserIDTextfield().setText("");
-                        } else {
-                            mainView.displayErrorMessage("User name is already taken, please enter a unique user name");
-                        }
+//                        if (isValidUser(newUserName)) {
+                        User newUser = new User(newUserName);
+                        users.put(newUserName, newUser);
+                        userList.add(newUser);
+                        mainView.addToJTree(selectionNode, newUser);
+                        mainView.getUserIDTextfield().setText("");
+//                        } else {
+//                            mainView.displayErrorMessage("User name is already taken, please enter a unique user name");
+//                        }
                     }
                 }
 
@@ -82,13 +78,15 @@ public class MainController {
                         mainView.displayErrorMessage("A user was selected please select a Root group.");
                     } else {
                         String newGroupName = mainView.getGroupID();
-                        if (isUniqueGroup(newGroupName)) {
-                            groups.put(newGroupName, new UserGroup(newGroupName));
-                            mainView.addToJTree(selectionNode, new UserGroup(newGroupName));
-                            mainView.getGroupIDTextfield().setText("");
-                        } else {
-                            mainView.displayErrorMessage("Group is already taken, please enter a unique group name");
-                        }
+                        //if (isUniqueGroup(newGroupName)) {
+                        UserGroup group = new UserGroup(newGroupName);
+                        groups.put(newGroupName, group);
+                        groupList.add(group);
+                        mainView.addToJTree(selectionNode, group);
+                        mainView.getGroupIDTextfield().setText("");
+//                        } else {
+//                            mainView.displayErrorMessage("Group is already taken, please enter a unique group name");
+//                        }
                     }
                 }
             }
@@ -136,25 +134,87 @@ public class MainController {
         mainView.getShowGroupTotalButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                displayMessage("Number of total group: "+ groups.size());
+                displayMessage("Number of total group: " + groups.size());
             }
         });
 
         mainView.getShowUserTotalButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                displayMessage("Number of total users: "+ users.size());
+                displayMessage("Number of total users: " + users.size());
             }
         });
-    }
+
+        mainView.getValidIDsButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Iterator userItr = userList.iterator();
+                Iterator groupItr = groupList.iterator();
+
+                HashSet<String> userNames = new HashSet<>();
+                HashSet<String> groupNames = new HashSet<>();
+                int nonUniqueUserCtr = 0;
+                int nonUniqueGroupCtr = 0;
+                int spacesCtr = 0;
+                while (userItr.hasNext()) {
+                    String userName = userItr.next().toString();
+
+                    if (!userNames.contains(userName)) {
+                        if (userName.contains(" ")) {
+                            spacesCtr++;
+                        }
+                        userNames.add(userName);
+                    } else if (userNames.contains(userName)) {
+                        nonUniqueUserCtr = nonUniqueUserCtr + 2;
+                    } else if (userName.contains(" ")) {
+                        spacesCtr++;
+                    }
+                }
+
+                while (groupItr.hasNext()) {
+                    String key = groupItr.next().toString();
+
+
+                    if (!groupNames.contains(key)) {
+                        if (key.contains(" ")) {
+                            spacesCtr++;
+                        }
+                        groupNames.add(key);
+                    } else if (groupNames.contains(key)) {
+                        nonUniqueGroupCtr = nonUniqueGroupCtr + 2;
+                    } else if (key.contains(" ")) {
+                        spacesCtr++;
+                    }
+                }
+
+
+                displayMessage("Number of non-unique users: " + nonUniqueUserCtr
+                        + "\n Number of non-unique groups: " + nonUniqueGroupCtr
+                        + "\n Number of users and groups with spaces: " + spacesCtr);
+            }
+        });
+
+
+        mainView.getLastUpdateButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MostRecentVisitor mostRecentVisitor = new MostRecentVisitor();
+                for (User user: userList){
+                    user.accept(mostRecentVisitor);
+                }
+                displayMessage(mostRecentVisitor.getMostRecent());
+            }
+        });
+
+    } // end of listeners
 
     private void displayMessage(String msg) {
         JOptionPane.showMessageDialog(mainView.getFrame(), msg);
     }
 
-    private boolean isUniqueGroup(String newGroupName) {
-        return !(groups.containsKey(newGroupName.toLowerCase()));
-    }
+//    //private boolean isUniqueGroup(String newGroupName) {
+//        return !(groups.containsKey(newGroupName.toLowerCase()));
+//    }
 
     private boolean isSelectionNull() {
         return mainView.getJtree().getLastSelectedPathComponent() == null;
@@ -186,5 +246,7 @@ public class MainController {
             u.accept(v);
         }
     }
+
+
 }
 

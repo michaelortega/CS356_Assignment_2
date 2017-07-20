@@ -6,8 +6,6 @@ import Models.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class UserProfileView {
@@ -25,6 +23,7 @@ public class UserProfileView {
     private JTextField userNameTextField;
     private JScrollPane scrollPane;
     private JScrollPane scrollPane2;
+    private JTextField lastUpdateJText;
 
     public UserProfileView(User currentUser) {
         this.currentUser = currentUser;
@@ -42,9 +41,10 @@ public class UserProfileView {
             String userName = userNameTextField.getText().toLowerCase();
 
 
-            if (MainController.isValidUser(userName)) {
-                JOptionPane.showMessageDialog(userProfileFrame, "Error: Not a valid User ");
-            } else if (currentUser.displayID().equals(userName)) {
+//            if (MainController.isValidUser(userName)) {
+//                JOptionPane.showMessageDialog(userProfileFrame, "Error: Not a valid User ");
+//            } else
+            if (currentUser.displayID().equals(userName)) {
                 JOptionPane.showMessageDialog(userProfileFrame, "Error: You Cannot follow yourself");
             } else if (currentUser.isFollowing(userName)) {
                 JOptionPane.showMessageDialog(userProfileFrame, "Error: Already following " + userName);
@@ -65,8 +65,10 @@ public class UserProfileView {
             if (!tweet.equals("")) {
                 newsFeedDefaultListModel.addElement(tweet);
                 currentUser.addNewsFeedTweet(tweet, tweetMsg);
+                currentUser.setLastUpdate(System.currentTimeMillis());
                 currentUser.notifyObservers();
                 tweetTextField.setText("");
+                lastUpdateJText.setText(currentUser.getLastUpdateString());
 
             } else {
                 JOptionPane.showMessageDialog(userProfileFrame, "Tweet can not be empty");
@@ -97,15 +99,20 @@ public class UserProfileView {
         userProfileFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         userNameTextField = new JTextField();
         followUserButton = new JButton("Follow User");
-        userProfileFrame.setSize(700, 400);
+        userProfileFrame.setSize(600, 400);
         userProfileFrame.setResizable(false);
 
         tweetTextField = new JTextField();
         postTweetButton = new JButton("Post Tweet");
 
-
+        JTextField timeField = new JTextField("Created: " + currentUser.getTimeCreated());
+        timeField.setEditable(false);
+        lastUpdateJText = new JTextField(currentUser.getLastUpdateString());
+        lastUpdateJText.setEditable(false);
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(1, 2, 5, 5));
+        topPanel.setLayout(new GridLayout(2, 2, 5, 5));
+        topPanel.add(timeField);
+        topPanel.add(lastUpdateJText);
         topPanel.add(userNameTextField);
         topPanel.add(followUserButton);
 

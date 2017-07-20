@@ -7,4 +7,5 @@ public abstract class Observable {
     abstract public void addObserver(User user);
     abstract public void notifyObservers();
 
+
 }

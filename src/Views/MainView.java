@@ -3,6 +3,7 @@ package Views;
 import Models.TreeComponent;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
@@ -24,6 +25,10 @@ public class MainView {
     private JButton showGroupTotalButton;
     private JButton showPositiveTotalButton;
     private JPanel buttonsPanel;
+    private JButton validIDsButton;
+
+
+    private JButton lastUpdateButton;
 
 
     private JFrame frame;
@@ -68,6 +73,10 @@ public class MainView {
         return buttonsPanel;
     }
 
+    public JButton getValidIDsButton() {
+        return validIDsButton;
+    }
+
     public MainView() {
         treeView = new TreeView();
         initButtons();
@@ -95,7 +104,8 @@ public class MainView {
         addGroupButton = new JButton("Add Group");
         openUserButton = new JButton("Open User View");
         openUserButton.setSize(304, 30);
-
+        validIDsButton = new JButton("Check Valid ID's");
+        lastUpdateButton = new JButton("Recent User");
         //init top text fields
         userIDTextfield = new JTextField();
         groupIDTextfield = new JTextField();
@@ -121,8 +131,11 @@ public class MainView {
         centerButtonPanel.setBorder(new EmptyBorder(5, 0, 5, 15));
 
         JPanel innerCenterPanel = new JPanel();
-        centerButtonPanel.setLayout(new BorderLayout());
-        innerCenterPanel.add(openUserButton, BorderLayout.CENTER);
+        centerButtonPanel.setLayout(new GridLayout(1,3));
+        innerCenterPanel.add(openUserButton);
+        innerCenterPanel.add(validIDsButton);
+        innerCenterPanel.add(lastUpdateButton);
+
 
         centerButtonPanel.add(innerCenterPanel);
 
@@ -174,5 +187,8 @@ public class MainView {
 
     public JButton getUserProfileButton() {
         return openUserButton;
+    }
+    public JButton getLastUpdateButton() {
+        return lastUpdateButton;
     }
 }
